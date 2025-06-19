@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vehicle Scrapping Facility - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/colors.css') }}">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                url('https://t3.ftcdn.net/jpg/10/03/15/04/360_F_1003150417_ajJPKn0BpVwTSUO0j58vENuPbbusqapW.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--color-text-dark);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+            animation: backgroundZoom 60s ease-in-out infinite alternate;
+        }
+        @keyframes backgroundZoom {
+            0% {
+                background-size: 100% 100%;
+            }
+            100% {
+                background-size: 110% 110%;
+            }
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            z-index: -1;
+        }
+        header {
+            background-color: var(--color-primary-blue);
+            color: var(--color-background-light);
+            padding: 15px 30px;
+            box-shadow: var(--shadow-primary);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 3.5em;
+            letter-spacing: 4px;
+            font-weight: 900;
+            color: var(--color-secondary-yellow);
+            text-shadow:
+                2px 2px 4px rgba(0,0,0,0.9),
+                0 0 10px rgba(255,202,40,0.9);
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0 0 0;
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            flex-wrap: nowrap;
+            align-items: center;
+        }
+        nav ul li a {
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 20px;
+            padding: 14px 32px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-primary);
+            transition: box-shadow 0.4s ease, transform 0.3s ease;
+            color: var(--color-text-light);
+            background: var(--color-primary-blue-dark);
+            text-shadow:
+                1px 1px 0 #000,
+                2px 2px 0 #1a2a4a,
+                3px 3px 5px rgba(0,0,0,0.7);
+            display: inline-block;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-sizing: border-box;
+            letter-spacing: 1.5px;
+        }
+        nav ul li a:hover {
+            background: var(--color-primary-blue);
+            box-shadow: 0 12px 40px rgba(33, 150, 243, 1);
+            transform: translateY(-4px);
+        }
+        main {
+            flex: 1;
+            padding: 40px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+        main h2 {
+            color: var(--color-primary-blue);
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        main p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: var(--color-text-dark);
+            max-width: 700px;
+            margin: 0 auto 30px auto;
+        }
+        footer {
+            background-color: var(--color-primary-blue);
+            color: var(--color-background-light);
+            text-align: center;
+            padding: 15px 20px;
+            font-size: 0.9em;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+        }
+        .banner {
+            margin: 20px 0;
+        }
+        .banner img {
+            max-width: 300px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        /* Flash message popup styles */
+        #flash-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--color-accent-orange);
+            color: var(--color-background-light);
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            font-weight: bold;
+            z-index: 1000;
+            display: none;
+            animation: fadein 0.5s, fadeout 0.5s 3.5s;
+        }
+        @keyframes fadein {
+            from {opacity: 0; right: 0;}
+            to {opacity: 1; right: 20px;}
+        }
+        @keyframes fadeout {
+            from {opacity: 1; right: 20px;}
+            to {opacity: 0; right: 0;}
+        }
+    </style>
+    <style>
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+                padding: 10px 15px;
+            }
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+                margin: 10px 0 0 0;
+                align-items: center;
+            }
+            nav ul li a {
+                font-size: 18px;
+                padding: 12px 24px;
+            }
+            main {
+                max-width: 95%;
+                padding: 20px 15px;
+            }
+            main h2 {
+                font-size: 1.5em;
+            }
+            main p {
+                font-size: 1em;
+            }
+            .banner {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .banner img {
+                max-width: 80%;
+                height: auto;
+            }
+        }
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5em;
+                padding: 8px 10px;
+            }
+            nav ul li a {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+            main h2 {
+                font-size: 1.2em;
+            }
+            main p {
+                font-size: 0.9em;
+            }
+            #chatbot-button {
+                bottom: 80px !important;
+                right: 20px !important;
+                width: 50px !important;
+                height: 50px !important;
+                padding: 10px !important;
+                box-shadow: 0 4px 15px rgba(211, 47, 47, 0.8) !important;
+            }
+            #chatbot-window {
+                width: 280px !important;
+                height: 420px !important;
+            }
+            a[style*="position: fixed"][href*="contact_us"] {
+                bottom: 20px !important;
+                right: 20px !important;
+                padding: 12px 20px !important;
+                font-size: 16px !important;
+                box-shadow: 0 4px 15px rgba(76, 175, 80, 0.8) !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header style="text-align: center; position: relative;">
+        <h1>Telangana's Innodatatics Vehicle Scrapping Portal</h1>
+        <nav>
+            <button id="ellipsis-menu-button" aria-label="Toggle menu" style="position: absolute; top: 15px; right: 15px; background: transparent; border: none; font-size: 28px; cursor: pointer; display: none;">&#8942;</button>
+            <ul id="menu" style="display: flex; justify-content: center; gap: 20px; padding: 0; margin: 15px 0 0 0; list-style: none;">
+                <li><a href="{{ url_for('register') }}">Register Vehicle</a></li>
+                <li><a href="{{ url_for('list_vehicles') }}">View Vehicles</a></li>
+                {% if session.get('username') %}
+                    <li><a href="{{ url_for('logout') }}" class="menu-button">Logout</a></li>
+                    {% if session.get('role') != 'admin' %}
+                        <li><a href="{{ url_for('quotation') }}" class="menu-button">Get Quotation</a></li>
+                    {% endif %}
+                {% else %}
+                    <li><a href="{{ url_for('login_register') }}" class="menu-button">Login</a></li>
+                    <li><a href="{{ url_for('login_register') }}" class="menu-button">User Registration</a></li>
+                    <li><a href="{{ url_for('admin_login') }}" class="menu-button">Admin Login</a></li>
+                    <li><a href="{{ url_for('admin_register') }}" class="menu-button">Admin Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="banner" style="display: flex; align-items: center; justify-content: center; gap: 20px; background: linear-gradient(90deg, #004aad, #1e88e5); padding: 15px 30px; border-radius: 12px; box-shadow: 0 8px 30px rgba(0, 74, 173, 0.8);">
+            <a href="https://www.telangana.gov.in/" target="_blank" rel="noopener noreferrer">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Banner_of_Telangana.png" alt="Telangana Government" style="height: 120px; width: auto; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.6); transform: scale(1.05); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" />
+            </a>
+            <span style="font-weight: 900; font-size: 1.5em; color: #ffca28; text-shadow: 2px 2px 6px rgba(0,0,0,0.9); align-self: center; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; letter-spacing: 2px; user-select: none; margin: 0 15px;">
+                Powered by
+            </span>
+            <a href="https://innodatatics.ai/" target="_blank" rel="noopener noreferrer">
+                <img src="https://discovery-static.patsnap.com/seo/logo/organization/entity/organization/image/logo/c8da/f9fb/1800/a3a1/c8daf9fb1800a3a1.png" alt="Innodatatics Logo" style="height: 100px; width: auto; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.6); transform: scale(1.05); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" />
+            </a>
+        </div>
+        <h2 style="overflow: hidden; white-space: nowrap; box-sizing: border-box; animation: marquee 15s linear infinite; font-weight: 900; font-size: 2.5em; color:rgb(146, 139, 66); text-shadow:
+            1px 1px 0 #000,
+            2px 2px 0 #111,
+            3px 3px 0 #222,
+            4px 4px 0 #333,
+            5px 5px 10px rgba(88, 39, 39, 0.8);
+            transform: perspective(500px) rotateX(10deg) rotateY(5deg);
+            ">
+            Welcome to the Registered Vehicle Scrapping Facility (RVSF)
+        </h2>
+        <style>
+            @keyframes marquee {
+                0%   { transform: translateX(100%); }
+                100% { transform: translateX(-100%); }
+            }
+        </style>
+        <p style="font-weight: 700; color: var(--color-primary-blue); text-shadow: 1px 1px 3px rgba(255, 202, 40, 0.8);">
+            The Telangana's Innodatatics Vehicle Scrapping Portal is your trusted platform for responsible and eco-friendly vehicle scrapping.
+            Our facility ensures that your old or damaged vehicles are scrapped in compliance with government regulations, promoting sustainability and safety.
+        </p>
+        <p style="font-weight: 700; color: var(--color-primary-blue); text-shadow: 1px 1px 3px rgba(255, 202, 40, 0.8);">
+            Register your vehicle for scrapping, view registered vehicles, get quotations, and manage your account easily through our user-friendly portal.
+            Join us in making Telangana cleaner and greener by scrapping vehicles responsibly.
+        </p>
+        <div style="margin-top: 30px; text-align: center;">
+        </div>
+        <section style="margin-top: 40px; max-width: 900px; margin-left: auto; margin-right: auto; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: var(--color-primary-blue); text-align: left;">
+            <h3 style="font-size: 2.4em; font-weight: 900; margin-bottom: 25px; border-bottom: 4px solid #ffca28; padding-bottom: 12px; color: #ffca28; text-shadow: 3px 3px 8px rgba(0,0,0,0.85); -webkit-text-stroke: 1px black; text-stroke: 1px black;">
+                🔧 Our Services at a Glance
+            </h3>
+            <p style="font-size: 1.2em; margin-bottom: 30px; color: #222; font-weight: 700; text-shadow: 1px 1px 3px rgba(255, 202, 40, 0.8);">
+                At Vehicle Scrapping Facility, we provide a complete, end-to-end solution for responsibly scrapping old and unfit vehicles in compliance with Indian government norms. Backed by Innodatatics’ AI-powered backend, we ensure transparency, efficiency, and eco-friendly disposal from start to finish.
+            </p>
+            <ul style="list-style: none; padding: 0; font-size: 1.1em; color: #333;">
+                <li style="margin-bottom: 25px; background: linear-gradient(90deg,rgb(255, 111, 0) 0%,rgb(255, 201, 40) 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(255, 111, 0, 0.6); color: white;">
+                    <strong style="font-size: 1.4em; font-weight: 900; color: #3e2723;">🚗 1. Instant Vehicle Valuation (Get Quote)</strong><br/>
+                    <ul style="list-style: disc; margin-left: 25px; color: #fff;">
+                       
+                        <li>Our smart quote engine calculates the real-time scrap value of your vehicle based on:</li>
+                        <li>Vehicle make, model, and year.</li>
+                        <li>Condition of the vehicle.</li>
+                        <li>Current scrap market rates.</li>
+                        <li>Simply enter your registration number or vehicle details, and get an instant estimate.</li>
+                    </ul>
+                </li>
+                <li style="margin-bottom: 25px; background: linear-gradient(90deg, #ff6f00 0%, #ffca28 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(255, 111, 0, 0.6); color: white;">
+                    <strong style="font-size: 1.4em; font-weight: 900; color: #3e2723;">📝 2. Documentation & RTO Deregistration Support</strong><br/>
+                    <ul style="list-style: disc; margin-left: 25px; color: #fff;">
+                        
+                        <li>We handle all mandatory paperwork:</li>
+                        <li>RC (Registration Certificate) validation.</li>
+                        <li>RTO deregistration certificate.</li>
+                        <li>Legal affidavit and scrapping certificate.</li>
+                        <li>Our team ensures smooth compliance with scrapping policies under the Vehicle Scrappage Policy, 2021.</li>
+                    </ul>
+                </li>
+                <li style="margin-bottom: 25px; background: linear-gradient(90deg, #ff6f00 0%, #ffca28 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(255, 111, 0, 0.6); color: white;">
+                    <strong style="font-size: 1.4em; font-weight: 900; color: #3e2723;">🛻 3. Vehicle Pickup & Towing</strong><br/>
+                    <ul style="list-style: disc; margin-left: 25px; color: #fff;">
+                        
+                        <li>We provide free pickup services from your doorstep across our Telangana coverage areas.</li>
+                        <li>Vehicles are securely transported to our authorized scrapping yard using GPS-enabled towing trucks.</li>
+                    </ul>
+                </li>
+                <li style="margin-bottom: 25px; background: linear-gradient(90deg, #ff6f00 0%, #ffca28 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(255, 111, 0, 0.6); color: white;">
+                    <strong style="font-size: 1.4em; font-weight: 900; color: #3e2723;">🏭 4. Safe & Eco-Friendly Scrapping Process</strong><br/>
+                    <ul style="list-style: disc; margin-left: 25px; color: #fff;">
+                        
+                        <li>Vehicles are dismantled at our authorized and pollution-controlled facility.</li>
+                        <li>Hazardous fluids (oil, coolant, fuel) are safely drained and recycled.</li>
+                        <li>Usable metals and components are processed with minimal environmental impact.</li>
+                    </ul>
+                </li>
+                <li style="margin-bottom: 25px; background: linear-gradient(90deg, #ff6f00 0%, #ffca28 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(255, 111, 0, 0.6); color: white;">
+                    <strong style="font-size: 1.4em; font-weight: 900; color: #3e2723;">📜 5. Certificate of Vehicle Destruction</strong><br/>
+                    <ul style="list-style: disc; margin-left: 25px; color: #fff;">
+                        
+                        <li>Once scrapped, customers receive a Certificate of Destruction (COD) that:</li>
+                        <li>Confirms lawful disposal of the vehicle.</li>
+                        <li>Can be used to claim road tax refund and insurance cancellation.</li>
+                    </ul>
+                </li>
+                <li style="margin-bottom: 25px; background: linear-gradient(90deg, #ff6f00 0%, #ffca28 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(255, 111, 0, 0.6); color: white;">
+                    <strong style="font-size: 1.4em; font-weight: 900; color: #3e2723;">👥 6. Customer Support & Assistance</strong><br/>
+                    <ul style="list-style: disc; margin-left: 25px; color: #fff;">
+                       
+                        <li>Our dedicated support team helps you:</li>
+                        <li>Navigate the scrapping process.</li>
+                        <li>Track the status of your vehicle.</li>
+                        <li>Clarify doubts related to compliance and documentation.</li>
+                    </ul>
+                </li>
+                <li style="margin-bottom: 25px; background: linear-gradient(90deg, #ff6f00 0%, #ffca28 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(255, 111, 0, 0.6); color: white;">
+                    <strong style="font-size: 1.4em; font-weight: 900; color: #3e2723;">🌐 7. Digital-First Experience</strong><br/>
+                    <ul style="list-style: disc; margin-left: 25px; color: #fff;">
+                       
+                        <li>The entire process—from quote generation to certificate issuance—is digital.</li>
+                        <li>Users can track progress via their dashboard and receive updates by SMS/email.</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </main>
+    <section style="max-width: 900px; margin: 40px auto 20px auto; padding: 20px; background: #004aad; color: #ffca28; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; border-radius: 12px; box-shadow: 0 6px 20px rgba(0, 74, 173, 0.7); text-align: center;">
+        <h3 style="font-size: 1.8em; font-weight: 900; margin-bottom: 15px; text-shadow: 2px 2px 6px rgba(0,0,0,0.8); text-align: left;">- Mission</h3>
+        <p style="font-size: 1.3em; font-weight: 700; margin-bottom: 25px; color: #fff; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); text-align: left;">
+            Promote environmentally responsible vehicle recycling.
+        </p>
+        <h3 style="font-size: 1.8em; font-weight: 900; margin-bottom: 15px; text-shadow: 2px 2px 6px rgba(0,0,0,0.8); text-align: left;">- Vision</h3>
+        <p style="font-size: 1.3em; font-weight: 700; color: #fff; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); text-align: left;">
+            Become Telangana’s most trusted and transparent scrapping partner.
+        </p>
+    </section>
+
+    <!-- Chatbot UI -->
+    <div id="chatbot-container" style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+        <button id="chatbot-button" title="Chatbot" aria-label="Chatbot">
+            <!-- Robot head SVG icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="28" height="28" fill="white" aria-hidden="true" focusable="false">
+                <rect x="12" y="20" width="40" height="28" rx="6" ry="6" stroke="white" stroke-width="2" fill="none"/>
+                <circle cx="22" cy="30" r="4" fill="white"/>
+                <circle cx="42" cy="30" r="4" fill="white"/>
+                <rect x="26" y="40" width="12" height="6" rx="3" ry="3" fill="white"/>
+                <line x1="12" y1="20" x2="12" y2="12" stroke="white" stroke-width="2"/>
+                <line x1="52" y1="20" x2="52" y2="12" stroke="white" stroke-width="2"/>
+                <line x1="20" y1="12" x2="44" y2="12" stroke="white" stroke-width="2"/>
+            </svg>
+        </button>
+        <span style="font-weight: bold; font-size: 14px; color: #d32f2f; user-select: none; background-color: white; padding: 4px 8px; border-radius: 4px;">
+            Chatbot
+        </span>
+        <div id="chatbot-window" class="hidden">
+            <div id="chatbot-header">
+                <span>Vehicle Scrapping Chatbot</span>
+                <button id="chatbot-close" title="Close">×</button>
+            </div>
+            <div id="chatbot-messages"></div>
+            <input type="text" id="chatbot-input" placeholder="Ask a question..." autocomplete="off" />
+            <ul id="chatbot-suggestions" class="suggestions-list"></ul>
+        </div>
+    </div>
+
+    <style>
+        #chatbot-container {
+            position: fixed;
+            bottom: 90px;
+            right: 60px;
+            z-index: 1100;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #chatbot-button {
+            background-color: #d32f2f; /* Changed to vibrant red */
+            color: #ffffff; /* White text */
+            border: none;
+            border-radius: 50%;
+            padding: 12px;
+            font-weight: 900;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(211, 47, 47, 0.8);
+            transition: all 0.3s ease;
+            width: 60px;
+            height: 60px;
+            user-select: none;
+            animation: pulse 2.5s infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.7);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 15px 5px rgba(211, 47, 47, 0.5);
+                transform: scale(1.05);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.7);
+                transform: scale(1);
+            }
+        }
+        #chatbot-button.expanded {
+            background-color: #9a0007;
+            box-shadow: 0 8px 30px rgba(154, 0, 7, 0.9);
+        }
+        #chatbot-window {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 12px 40px rgba(211, 47, 47, 0.9);
+            width: 320px;
+            height: 480px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            margin-top: 10px;
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+        #chatbot-window.expanded {
+            width: 400px;
+            height: 600px;
+        }
+        #chatbot-window.hidden {
+            display: none;
+        }
+        #chatbot-header {
+            background-color: #d32f2f; /* Changed to match button color */
+            color: #ffffff; /* White text */
+            font-weight: 900;
+            font-size: 18px;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        #chatbot-close {
+            background: transparent;
+            border: none;
+            color: #ffca28;
+            font-size: 24px;
+            cursor: pointer;
+            font-weight: 900;
+            line-height: 1;
+            padding: 0;
+            margin: 0;
+        }
+        #chatbot-messages {
+            flex: 1;
+            padding: 15px 20px;
+            overflow-y: auto;
+            font-size: 14px;
+            color: #333;
+        }
+        #chatbot-messages .message {
+            margin-bottom: 12px;
+            padding: 10px 15px;
+            border-radius: 12px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        #chatbot-messages .user-message {
+            background-color: #004aad;
+            color: #ffca28;
+            align-self: flex-end;
+        }
+        #chatbot-messages .bot-message {
+            background-color: #e0e0e0;
+            color: #333;
+            align-self: flex-start;
+        }
+        #chatbot-input {
+            border: none;
+            border-top: 1px solid #ccc;
+            padding: 12px 20px;
+            font-size: 16px;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #chatbot-suggestions {
+            list-style: none;
+            margin: 0;
+            padding: 0 20px 10px 20px;
+            max-height: 120px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            border-top: 1px solid #ccc;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+        }
+        #chatbot-suggestions li {
+            padding: 8px 10px;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+        #chatbot-suggestions li:hover {
+            background-color: #004aad;
+            color: #ffca28;
+        }
+<path>vehicle_scrapping_app/templates/home.html</path>
+<content>
+<<<<<<< SEARCH
+        #chatbot-button {
+            background-color: #d32f2f; /* Changed to vibrant red */
+            color: #ffffff; /* White text */
+            border: none;
+            border-radius: 25px;
+            padding: 12px 20px;
+            font-weight: 900;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(211, 47, 47, 0.8);
+            transition: all 0.3s ease;
+            width: 100px;
+            height: 50px;
+            user-select: none;
+        }
+        #chatbot-button.expanded {
+            /* Remove expanded styles to avoid large empty container */
+            width: 100px;
+            height: 50px;
+            border-radius: 25px;
+            font-size: 18px;
+            padding: 12px 20px;
+            box-shadow: 0 6px 20px rgba(211, 47, 47, 0.8);
+            position: static;
+            text-align: center;
+            display: inline-block;
+        }
+        #chatbot-window {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 12px 40px rgba(211, 47, 47, 0.9);
+            width: 320px;
+            height: 480px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        #chatbot-window.hidden {
+            display: none;
+        }
+        #chatbot-header {
+            background-color: #d32f2f; /* Changed to match button color */
+            color: #ffffff; /* White text */
+            font-weight: 900;
+            font-size: 18px;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+=======
+        #chatbot-button {
+            background-color: #007bff; /* Changed to a brighter blue */
+            color: #ffffff; /* Changed text color to white */
+            border: none;
+            border-radius: 25px;
+            padding: 12px 20px;
+            font-weight: 900;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.8);
+            transition: all 0.3s ease;
+            width: 100px;
+            height: 50px;
+            user-select: none;
+        }
+        #chatbot-button.expanded {
+            /* Remove expanded styles to avoid large empty container */
+            width: 100px;
+            height: 50px;
+            border-radius: 25px;
+            font-size: 18px;
+            padding: 12px 20px;
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.8);
+            position: static;
+            text-align: center;
+            display: inline-block;
+        }
+        #chatbot-window {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 12px 40px rgba(0, 123, 255, 0.9);
+            width: 320px;
+            height: 480px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            margin-top: 10px;
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+        #chatbot-window.expanded {
+            width: 400px;
+            height: 600px;
+        }
+        #chatbot-window.hidden {
+            display: none;
+        }
+        #chatbot-header {
+            background-color: #007bff; /* Changed to match button color */
+            color: #ffffff; /* Changed text color to white */
+            font-weight: 900;
+            font-size: 18px;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        #chatbot-close {
+            background: transparent;
+            border: none;
+            color: #ffca28;
+            font-size: 24px;
+            cursor: pointer;
+            font-weight: 900;
+            line-height: 1;
+            padding: 0;
+            margin: 0;
+        }
+        #chatbot-messages {
+            flex: 1;
+            padding: 15px 20px;
+            overflow-y: auto;
+            font-size: 14px;
+            color: #333;
+        }
+        #chatbot-messages .message {
+            margin-bottom: 12px;
+            padding: 10px 15px;
+            border-radius: 12px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        #chatbot-messages .user-message {
+            background-color: #004aad;
+            color: #ffca28;
+            align-self: flex-end;
+        }
+        #chatbot-messages .bot-message {
+            background-color: #e0e0e0;
+            color: #333;
+            align-self: flex-start;
+        }
+        #chatbot-input {
+            border: none;
+            border-top: 1px solid #ccc;
+            padding: 12px 20px;
+            font-size: 16px;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #chatbot-suggestions {
+            list-style: none;
+            margin: 0;
+            padding: 0 20px 10px 20px;
+            max-height: 120px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            border-top: 1px solid #ccc;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+        }
+        #chatbot-suggestions li {
+            padding: 8px 10px;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+        #chatbot-suggestions li:hover {
+            background-color: #004aad;
+            color: #ffca28;
+        }
+    </style>
+
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+   
+    
+    <footer>
+        &copy; 2024 Telangana Innodatatics. All rights reserved.
+    </footer>
+    <a href="{{ url_for('contact_us') }}" style="position: fixed; bottom: 20px; right: 20px; background-color: #4caf50; color: white; padding: 15px 30px; border-radius: 50px; box-shadow: 0 6px 20px rgba(76, 175, 80, 0.9); font-weight: 700; font-size: 20px; text-decoration: none; z-index: 1000; transition: background-color 0.3s ease;">
+        Contact Us
+    </a>
+    <div id="flash-message"></div>
+    <script>
+        // Flash message popup display
+        const flashMessageDiv = document.getElementById('flash-message');
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                flashMessageDiv.textContent = "{{ messages[0] }}";
+                flashMessageDiv.style.display = 'block';
+                setTimeout(() => {
+                    flashMessageDiv.style.display = 'none';
+                }, 4000);
+            {% endif %}
+        {% endwith %}
+    </script>
+</body>
+</html>
