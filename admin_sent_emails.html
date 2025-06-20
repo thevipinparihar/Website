@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sent Emails - Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/colors.css') }}">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--color-primary-blue-dark) 0%, var(--color-primary-blue) 100%);
+            color: var(--color-background-light);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        h1 {
+            text-align: center;
+            color: var(--color-secondary-yellow);
+            margin-bottom: 30px;
+            font-weight: 900;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(26, 35, 126, 0.8);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(255, 202, 40, 0.7);
+            color: var(--color-background-light);
+        }
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 202, 40, 0.3);
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: var(--color-secondary-yellow);
+            color: var(--color-primary-blue-dark);
+            font-weight: 900;
+            font-size: 1.1em;
+            text-shadow: 1px 1px 3px rgba(255, 202, 40, 0.8);
+        }
+        tbody tr:hover {
+            background-color: rgba(255, 202, 40, 0.3);
+            box-shadow: 0 0 20px rgba(255, 202, 40, 0.8);
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 0.9em;
+        }
+        a.back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--color-secondary-yellow);
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 0 10px rgba(255, 202, 40, 0.6);
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+        a.back-link:hover {
+            background-color: var(--color-secondary-yellow);
+            color: var(--color-primary-blue-dark);
+            box-shadow: 0 0 20px rgba(255, 202, 40, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <a href="{{ url_for('admin_dashboard') }}" class="back-link">&larr; Back to Admin Dashboard</a>
+    <h1>All Sent Emails</h1>
+    {% if sent_emails %}
+    <table>
+        <thead>
+            <tr>
+                <th>Recipient Email</th>
+                <th>Subject</th>
+                <th>Body</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for email in sent_emails %}
+            <tr>
+                <td>{{ email.to_email }}</td>
+                <td>{{ email.subject }}</td>
+                <td><pre>{{ email.body }}</pre></td>
+                <td>{{ email.timestamp }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No sent emails to display.</p>
+    {% endif %}
+</body>
+</html>

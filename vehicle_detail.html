@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vehicle Details - Vehicle Scrapping Facility</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/colors.css') }}">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--color-primary-blue-light) 0%, var(--color-primary-blue) 100%);
+            color: var(--color-text-dark);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: var(--color-primary-blue);
+            color: var(--color-background-light);
+            padding: 15px 30px;
+            box-shadow: var(--shadow-primary);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            letter-spacing: 2px;
+        }
+        main {
+            flex: 1;
+            padding: 40px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        h2 {
+            color: var(--color-primary-blue);
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .vehicle-info {
+            font-size: 1.1em;
+            color: var(--color-text-dark);
+            margin-bottom: 15px;
+        }
+        .images-section {
+            margin-top: 30px;
+        }
+        .images-section h3 {
+            color: var(--color-primary-blue);
+            margin-bottom: 15px;
+        }
+        .image-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .image-gallery img {
+            max-width: 200px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-primary);
+        }
+        a.back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: var(--color-background-light);
+            font-weight: 700;
+            text-decoration: none;
+            background-color: var(--color-accent-orange);
+            padding: 10px 25px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-accent-orange);
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        a.back-link:hover {
+            background-color: var(--color-accent-red);
+            box-shadow: var(--shadow-accent-red);
+            text-decoration: none;
+        }
+        footer {
+            background-color: var(--color-primary-blue);
+            color: var(--color-background-light);
+            text-align: center;
+            padding: 15px 20px;
+            font-size: 0.9em;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Telangana Innodatatics Vehicle Scrapping Portal</h1>
+    </header>
+    <main>
+        <h2>Vehicle Details</h2>
+        <div class="vehicle-info"><strong>Vehicle Number:</strong> {{ vehicle.vehicle_number }}</div>
+        <div class="vehicle-info"><strong>Vehicle Type:</strong> {{ vehicle.vehicle_type }}</div>
+        <div class="vehicle-info"><strong>Fuel Type:</strong> {{ vehicle.fuel_type }}</div>
+        {% if vehicle.vehicle_type == 'Car' %}
+        <div class="vehicle-info"><strong>Car Subtype:</strong> {{ vehicle.car_subtype }}</div>
+        {% endif %}
+        <div class="vehicle-info"><strong>Model:</strong> {{ vehicle.model }}</div>
+        <div class="vehicle-info"><strong>Year:</strong> {{ vehicle.year }}</div>
+        <div class="vehicle-info"><strong>Condition:</strong> {{ vehicle.condition }}</div>
+        <div class="vehicle-info"><strong>Reason for Scrapping:</strong> {{ vehicle.scrap_reason }}</div>
+        <div class="vehicle-info"><strong>Vehicle Weight (kg):</strong> {{ vehicle.vehicle_weight }}</div>
+        <div class="vehicle-info"><strong>Battery Condition:</strong> {{ vehicle.battery_condition }}</div>
+        <div class="vehicle-info"><strong>Tyres Condition:</strong> {{ vehicle.tyres_condition }}</div>
+        <div class="images-section">
+            <h3>RC Image</h3>
+            {% if vehicle.rc_image %}
+                <img src="{{ url_for('static', filename=vehicle.rc_image.split('static/')[-1].replace('\\', '/') ) }}" alt="RC Image" />
+            {% else %}
+                <p>No RC image available.</p>
+            {% endif %}
+        </div>
+        <div class="images-section">
+            <h3>Vehicle Images</h3>
+            {% if vehicle.vehicle_images %}
+                <div class="image-gallery">
+                    {% for img_path in vehicle.vehicle_images %}
+                        <img src="{{ url_for('static', filename=img_path.split('static/')[-1].replace('\\', '/') ) }}" alt="Vehicle Image" />
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No vehicle images available.</p>
+            {% endif %}
+        </div>
+        <a class="back-link" href="{{ url_for('list_vehicles') }}">Back to Registered Vehicles</a>
+        <a class="back-link" href="{{ url_for('edit_vehicle', vehicle_number=vehicle.vehicle_number) }}" style="margin-left: 20px;">Edit Vehicle Details</a>
+    <!-- Modal for enlarged image -->
+    <div id="imageModal" style="display:none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8);">
+        <span id="modalClose" style="position: absolute; top: 20px; right: 35px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
+        <img id="modalImage" style="margin: auto; display: block; max-width: 90%; max-height: 80vh; border-radius: 12px; box-shadow: 0 8px 20px rgba(255,255,255,0.3);" />
+    </div>
+
+    <footer>
+        &copy; 2024 Telangana Innodatatics. All rights reserved.
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const modalClose = document.getElementById('modalClose');
+
+            // Function to open modal with clicked image
+            function openModal(event) {
+                modal.style.display = 'flex';
+                modal.style.justifyContent = 'center';
+                modal.style.alignItems = 'center';
+                modal.style.backdropFilter = 'blur(5px)';
+                modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                modalImg.src = event.target.src;
+                modalImg.style.maxHeight = '80vh';
+                modalImg.style.maxWidth = '90%';
+                modalImg.style.borderRadius = '12px';
+                modalImg.style.boxShadow = '0 8px 20px rgba(255,255,255,0.3)';
+                modalImg.style.margin = '0';
+                modalImg.style.position = 'relative';
+                modalImg.style.top = 'auto';
+                modalImg.style.left = 'auto';
+                modalImg.style.transform = 'none';
+            }
+
+            // Attach click event to all images in the page inside main content
+            const images = document.querySelectorAll('main img');
+            images.forEach(img => {
+                img.style.cursor = 'pointer';
+                img.addEventListener('click', openModal);
+            });
+
+            // Close modal when clicking on close button
+            modalClose.addEventListener('click', function() {
+                modal.style.display = 'none';
+                modalImg.src = '';
+            });
+
+            // Close modal when clicking outside the image
+            modal.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                    modalImg.src = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

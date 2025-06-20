@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Register Vehicle for Scrapping - Vehicle Scrapping Facility</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/colors.css') }}">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('https://media.istockphoto.com/id/1438488899/vector/car-dump-junkyard-landscape-with-metal-pile-cartoon-steel-crane-working-dismantling.jpg?s=612x612&w=0&k=20&c=A8zNiMQp2hhTpu3DZqs1R1UKOrDraE3k4nYaoIaXvR4=') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--color-text-dark);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.85);
+            z-index: -1;
+        }
+        header {
+            background-color: var(--color-primary-blue);
+            color: var(--color-background-light);
+            padding: 15px 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            letter-spacing: 2px;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0 0 0;
+            display: flex;
+            gap: 20px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: var(--color-background-light);
+            font-weight: 600;
+            font-size: 16px;
+            padding: 8px 15px;
+            background-color: var(--color-accent-orange);
+            border-radius: 6px;
+            box-shadow: var(--shadow-accent-orange);
+            transition: background-color 0.3s ease;
+        }
+        nav ul li a:hover {
+            background-color: var(--color-accent-red);
+        }
+        .banner {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .banner img {
+            max-width: 300px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        main {
+            flex: 1;
+            padding: 40px 30px;
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+            background: var(--color-background-light);
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+            text-align: left;
+            transition: box-shadow 0.3s ease;
+        }
+        main:hover {
+            box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+        }
+        h2 {
+            color: var(--color-accent-orange);
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 2em;
+            letter-spacing: 1.5px;
+        }
+        form label {
+            font-weight: 700;
+            display: block;
+            margin-top: 20px;
+            color: var(--color-accent-orange);
+            font-size: 1.1em;
+        }
+        form input[type="text"], form select, form textarea, form input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin-top: 8px;
+            border: 2px solid var(--color-accent-orange);
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        form input[type="text"]:focus, form select:focus, form textarea:focus, form input[type="number"]:focus {
+            border-color: var(--color-accent-red);
+            box-shadow: 0 0 8px var(--color-accent-red-light);
+            outline: none;
+        }
+        form textarea {
+            resize: vertical;
+        }
+        button {
+            background-color: var(--color-accent-orange);
+            color: var(--color-background-light);
+            border: none;
+            padding: 14px 25px;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 30px;
+            width: 100%;
+            font-weight: 700;
+            box-shadow: var(--shadow-accent-orange);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        button:hover {
+            background-color: var(--color-accent-red);
+            box-shadow: 0 8px 20px var(--color-accent-red-dark);
+        }
+        .error {
+            color: var(--color-accent-red);
+            margin-top: 15px;
+            font-weight: 700;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        p.back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+        p.back-link a {
+            color: var(--color-background-light);
+            font-weight: 700;
+            text-decoration: none;
+            background-color: var(--color-accent-orange);
+            padding: 10px 25px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-accent-orange);
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        p.back-link a:hover {
+            background-color: var(--color-accent-red);
+            box-shadow: 0 8px 20px var(--color-accent-red-dark);
+            text-decoration: none;
+        }
+        footer {
+            background-color: var(--color-primary-blue);
+            color: var(--color-background-light);
+            text-align: center;
+            padding: 15px 20px;
+            font-size: 0.9em;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Telangana Innodatatics Vehicle Scrapping Portal</h1>
+    </header>
+    <div class="banner">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Banner_of_Telangana.png" alt="Telangana Government" />
+    </div>
+    <main>
+        <h2>Register Vehicle for Scrapping</h2>
+        <form method="POST" action="{{ url_for('register') }}" enctype="multipart/form-data">
+            {% if error %}
+            <div class="error">{{ error }}</div>
+            {% endif %}
+            <label for="vehicle_number">Vehicle Number:</label>
+            <input type="text" id="vehicle_number" name="vehicle_number" required />
+
+            <label for="vehicle_type">Vehicle Type:</label>
+            <select id="vehicle_type" name="vehicle_type" required onchange="toggleCarSubtype()">
+                <option value="">Select a type</option>
+                <option value="Car">Car</option>
+                <option value="Motorcycle">Motorcycle</option>
+                <option value="Truck">Truck</option>
+                <option value="Bus">Bus</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="fuel_type">Fuel Type:</label>
+            <select id="fuel_type" name="fuel_type" required>
+                <option value="">Select fuel type</option>
+                <option value="Petrol">Petrol</option>
+                <option value="Diesel">Diesel</option>
+                <option value="EV">EV</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="car_subtype" id="car_subtype_label" style="display:none;">Car Subtype:</label>
+            <select id="car_subtype" name="car_subtype" style="display:none;">
+                <option value="">Select car subtype</option>
+                <option value="SUV">SUV</option>
+                <option value="Sedan">Sedan</option>
+                <option value="Hatchback">Hatchback</option>
+                <option value="Coupe">Coupe</option>
+                <option value="Convertible">Convertible</option>
+                <option value="Other">Other</option>
+            </select>

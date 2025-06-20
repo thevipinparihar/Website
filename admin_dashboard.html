@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard - Vehicle Scrapping Facility</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/colors.css') }}">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: url('https://t3.ftcdn.net/jpg/10/03/15/04/360_F_1003150417_ajJPKn0BpVwTSUO0j58vENuPbbusqapW.jpg') no-repeat center center fixed, linear-gradient(135deg, var(--color-primary-blue-dark) 0%, var(--color-primary-blue) 100%);
+            background-size: cover;
+            color: var(--color-background-light);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+            background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+        }
+        header {
+            background-color: var(--color-primary-blue-dark);
+            color: var(--color-background-light);
+            padding: 40px 40px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+            border-bottom: 3px solid var(--color-secondary-yellow);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            letter-spacing: 4px;
+            font-weight: 900;
+            text-align: center;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        nav ul .left-menu {
+            display: flex;
+            gap: 25px;
+        }
+        nav ul li.logout-link a {
+            display: none !important;
+        }
+        button.logout-button {
+            background-color: #d32f2f !important;
+            color: white !important;
+            font-weight: 900 !important;
+            font-size: 18px !important;
+            padding: 10px 20px !important;
+            border-radius: 12px !important;
+            box-shadow: 0 0 15px rgba(211, 47, 47, 0.9) !important;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease !important;
+            cursor: pointer !important;
+            border: none !important;
+        }
+        button.logout-button:hover {
+            background-color: #9a0007 !important;
+            box-shadow: 0 0 25px rgba(154, 0, 7, 1) !important;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: var(--color-secondary-yellow);
+            font-weight: 800;
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: rgba(255, 202, 40, 0.15);
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(255, 202, 40, 0.6);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            display: inline-block;
+        }
+        nav ul li a:hover {
+            color: var(--color-primary-blue-dark);
+            background-color: var(--color-secondary-yellow);
+            box-shadow: 0 0 20px rgba(255, 202, 40, 0.9);
+        }
+        nav ul li button {
+            background-color: var(--color-secondary-yellow);
+            color: var(--color-primary-blue-dark);
+            font-weight: 800;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 0 10px rgba(255, 202, 40, 0.6);
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+        nav ul li button:hover {
+            background-color: var(--color-primary-blue-dark);
+            color: var(--color-secondary-yellow);
+            box-shadow: 0 0 20px rgba(255, 202, 40, 0.9);
+        }
+        nav ul li button.active {
+            background-color: var(--color-primary-blue-dark);
+            color: var(--color-secondary-yellow);
+            box-shadow: 0 0 25px rgba(255, 202, 40, 1);
+        }
+        main {
+            flex: 1;
+            padding: 40px 30px;
+            max-width: 1600px;
+            margin: 0 auto 50px auto;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 202, 40, 0.4);
+        }
+        main {
+            flex: 1;
+            padding: 40px 30px;
+            max-width: 1600px;
+            margin: 0 auto 50px auto;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 202, 40, 0.4);
+        }
+        h2 {
+            color: var(--color-secondary-yellow);
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 900;
+            font-size: 2.8em;
+            text-shadow:
+                -1px -1px 0 #000,
+                1px -1px 0 #000,
+                -1px 1px 0 #000,
+                1px 1px 0 #000;
+        }
+        /* Chart rows */
+        .chart-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 50px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            flex-wrap: nowrap;
+            width: 100%;
+        }
+        /* Chart boxes */
+        .chart-box {
+            width: 45%;
+            max-width: 600px;
+            max-height: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
+        .chart-box-with-bg {
+            background: rgba(26, 35, 126, 0.8);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(255, 202, 40, 0.7);
+        }
+        .chart-row-donut {
+            margin-top: 220px;
+            padding-top: 80px;
+            border-top: 2px solid rgba(255, 202, 40, 0.5);
+        }
+        .chart-row-donut .chart-box {
+            width: 22%;
+            max-width: 22%;
+            max-height: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Canvas styles */
+        .chart-box canvas {
+            max-width: 100%;
+            max-height: 400px;
+            width: auto !important;
+            height: auto !important;
+            display: block;
+            margin: 0 auto;
+        }
+        .chart-box h3 {
+            color: var(--color-secondary-yellow);
+            text-align: center;
+            margin-bottom: 10px;
+            white-space: normal;
+            font-size: 1.1em;
+            line-height: 1.2em;
+        }
+        /* Fix donut chart headings horizontal spacing */
+        .chart-row-donut {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: nowrap;
+            margin-bottom: 20px;
+        }
+        .chart-row-donut .chart-box h3 {
+            white-space: normal;
+            margin: 0;
+        }
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 12px;
+            margin-bottom: 40px;
+            color: var(--color-background-light);
+            box-shadow: 0 8px 30px rgba(255, 202, 40, 0.7);
+            border-radius: 20px;
+            overflow: hidden;
+            background: rgba(26, 35, 126, 0.8);
+            table-layout: fixed;
+        }
+        /* Set explicit column widths and consistent padding for all columns */
+        table thead tr th:nth-child(1) { /* Owner */
+            width: 8%;
+            min-width: 80px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        table thead tr th:nth-child(2) { /* Owner Email */
+            width: 12%;
+            min-width: 110px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        table thead tr th:nth-child(3) { /* Vehicle Number */
+            width: 10%;
+            min-width: 100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        table thead tr th:nth-child(4) { /* Vehicle Type */
+            width: 8%;
+            min-width: 80px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        table thead tr th:nth-child(5) { /* Fuel Type */
+            width: 8%;
+            min-width: 80px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        table thead tr th:nth-child(6) { /* Car Subtype */
+            width: 8%;
+            min-width: 80px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        table thead tr th:nth-child(7) { /* Model */
+            width: 8%;
+            min-width: 80px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        table thead tr th:nth-child(8) { /* Year */
+            width: 6%;
+            min-width: 60px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        table thead tr th:nth-child(9) { /* Condition */
+            width: 6%;
+            min-width: 60px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        table thead tr th:nth-child(10) { /* Reason for Scrapping */
+            width: 10%;
+            min-width: 100px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        table thead tr th:nth-child(11) { /* Vehicle Weight (kg) */
+            width: 8%;
+            min-width: 80px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        table thead tr th:nth-child(12) { /* Battery Condition */
+            width: 8%;
+            min-width: 80px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        table thead tr th:nth-child(13) { /* Tyres Condition */
+            width: 8%;
+            min-width: 80px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        table thead tr th:nth-child(14) { /* RC Image */
+            width: 8%;
+            min-width: 80px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        table thead tr th:nth-child(15) { /* Vehicle Images */
+            width: 8%;
+            min-width: 80px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        table thead tr th:nth-child(16) { /* Quoted Price */
+            width: 10%;
+            min-width: 100px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        /* Limit image container size and add horizontal scroll */
+        table td details > div {
+            max-width: 320px;
+            max-height: 150px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        /* Limit image size inside details */
+        table td details > div img {
+            max-height: 140px;
+            max-width: 100px;
+            margin-right: 5px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            cursor: pointer;
+            object-fit: contain;
+        }
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        th {
+            background-color: var(--color-secondary-yellow);
+            color: var(--color-primary-blue-dark);
+            font-weight: 900;
+            font-size: 1.1em;
+            text-shadow: 1px 1px 3px rgba(255, 202, 40, 0.8);
+        }
+        tbody tr {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            transition: background-color 0.3s ease;
+        }
+        tbody tr:hover {
+            background-color: rgba(255, 202, 40, 0.3);
+            box-shadow: 0 0 20px rgba(255, 202, 40, 0.8);
+        }
+        tbody tr td:first-child {
+            font-weight: 700;
+            font-size: 1.05em;
+        }
+        tbody tr td img {
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(255, 202, 40, 0.8);
+            transition: transform 0.3s ease;
+        }
+        tbody tr td img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 202, 40, 1);
+        }
+        form input[type="number"] {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--color-secondary-yellow);
+            font-size: 1em;
+            font-weight: 700;
+            color: var(--color-primary-blue-dark);
+            width: 100%;
+            box-sizing: border-box;
+            transition: box-shadow 0.3s ease;
+        }
+        form input[type="number"]:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--color-secondary-yellow);
+        }
+        form button {
+            background-color: var(--color-secondary-yellow);
+            color: var(--color-primary-blue-dark);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 900;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        form button:hover {
+            background-color: #e6b800;
+            box-shadow: 0 0 15px #e6b800;
+        }
+    </style>
+    <style>
+        @media (max-width: 1024px) {
+            main {
+                max-width: 95%;
+                padding: 20px 15px;
+            }
+            header h1 {
+                font-size: 1.8em;
+                padding: 15px 20px;
+            }
+            nav ul.top-menu {
+                flex-wrap: wrap;
+                gap: 15px;
+                justify-content: center;
+            }
+            nav ul.top-menu li {
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+            h2 {
+                font-size: 1.8em;
+            }
+            .chart-row {
+                flex-direction: column;
+                gap: 30px;
+            }
+            .chart-box {
+                width: 100% !important;
+                max-width: 100% !important;
+                max-height: none !important;
+            }
+            table {
+                font-size: 14px;
+            }
+        }
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.5em;
+                padding: 10px 15px;
+            }
+            nav ul.top-menu li {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            .chart-row {
+                gap: 20px;
+            }
+            table {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Removed vertical sidebar menu -->
+    <header style="position: relative;">
+        <h1>Telangana Innodatatics Vehicle Scrapping Portal - Admin Dashboard</h1>
+        <nav>
+            <button id="ellipsis-menu-button" aria-label="Toggle menu" style="position: absolute; top: 15px; right: 15px; background: transparent; border: none; font-size: 28px; cursor: pointer; display: none;">&#8942;</button>
+            <ul class="top-menu" id="menu" style="display: flex; align-items: center; justify-content: space-between; padding: 0; margin: 20px 0 0 0; list-style: none;">
+                <li><button class="active" data-section="charts" type="button">Charts</button></li>
+                <li><button data-section="vehicles" type="button">Registered Vehicles</button></li>
+                <li><button type="button" onclick="window.location.href='{{ url_for('admin_sent_emails') }}'" class="sent-mails-button">Sent Mails</button></li>
+                <li><button data-section="inquiry" type="button">Inquiry</button></li>
+                <li>
+                    <button data-section="reinspection" type="button" style="position: relative;">
+                        Reinspection Requests
+                        {% if pending_reinspection_count > 0 %}
+                        <span style="position: absolute; top: -5px; right: -10px; background: #d32f2f; color: white; border-radius: 50%; padding: 2px 8px; font-size: 12px; font-weight: bold; box-shadow: 0 0 5px rgba(211, 47, 47, 0.8);">
+                            {{ pending_reinspection_count }}
+                        </span>
+                        {% endif %}
+                    </button>
+                </li>
+                <li><button class="logout-button" type="button" onclick="window.location.href='{{ url_for('admin_logout') }}'">Logout</button></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="content">
+        <main>
+            <section id="charts" class="section active">
+                <h2>Vehicle Scrapping Statistics</h2>
+                <div class="chart-row">
+                    <div id="chart-container" class="chart-box">
+                        <h3>Vehicle Type Chart</h3>
+                        <canvas id="vehicleTypeChart" data-vehicle-types='{{ vehicle_types | tojson }}' width="500" height="400"></canvas>
+                    </div>
+                    <div id="avg-price-chart-container" class="chart-box">
+                        <h3>Average Vehicle Price</h3>
+                        <canvas id="averagePriceChart" data-average-prices='{{ average_prices | tojson }}' width="500" height="400"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-row">
+                    <div id="timeSeriesChartContainer" class="chart-box chart-box-with-bg" style="width: 70%;">
+                        <h3>Time Series Data Chart</h3>
+                        <div class="time-range-select-container">
+                            <label for="timeRangeSelect">Select Time Range:</label>
+                            <select id="timeRangeSelect">
+                                <option value="days" selected>Days</option>
+                                <option value="months">Months</option>
+                                <option value="years">Years</option>
+                            </select>
+                        </div>
+                        <canvas id="timeSeriesChart" width="500" height="400"></canvas>
+                    </div>
+                    <div id="scrapPriceChartContainer" class="chart-box" style="width: 45%;">
+                        <h3>Scrap Metal Prices</h3>
+                        <canvas id="scrapPriceChart" data-scrap-prices='{{ scrapPrices | tojson }}' width="500" height="400"></canvas>
+                    </div>
+                </div>
+                <div class="chart-row chart-row-donut" style="align-items: flex-start;">
+                <div id="conditionChartContainer" class="chart-box" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
+                    <h3 style="margin-bottom: 10px;">Vehicle Condition Distribution</h3>
+                    <canvas id="conditionChart" data-condition-counts='{{ condition_counts | tojson }}' width="300" height="300"></canvas>
+                </div>
+                <div id="batteryConditionChartContainer" class="chart-box" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
+                    <h3 style="margin-bottom: 10px;">Battery Condition Distribution</h3>
+                    <canvas id="batteryConditionChart" data-battery-condition-counts='{{ battery_condition_counts | tojson }}' width="300" height="300"></canvas>
+                </div>
+                    <div id="tyresConditionChartContainer" class="chart-box" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
+                        <h3 style="margin-bottom: 10px;">Tyres Condition Distribution</h3>
+                        <canvas id="tyresConditionChart" data-tyres-condition-counts='{{ tyres_condition_counts | tojson }}' width="300" height="300"></canvas>
+                    </div>
+                    <div id="scrapReasonChartContainer" class="chart-box" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
+                        <h3 style="margin-bottom: 10px;">Scrap Reason Distribution</h3>
+                        <canvas id="scrapReasonChart" data-scrap-reason-counts='{{ scrap_reason_counts | tojson }}' width="300" height="300"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="vehicles" class="section">
+                <h2>All Registered Vehicles</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Vehicle Number</th>
+                            <th>Owner</th>
+                            <th>Edited Data</th>
+                            <th>RC Image</th>
+                            <th>Vehicle Images</th>
+                            <th>Quoted Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for vehicle in vehicles %}
+                        <tr>
+                            <td>{{ vehicle.vehicle_number }}</td>
+                            <td>{{ users[vehicle.owner_username].name if vehicle.owner_username in users else 'Unknown' }}</td>
+                            <td>
+                                <ul class="data-list">
+                                    <li>Owner Email: {{ users[vehicle.owner_username].email if vehicle.owner_username in users else 'Unknown' }}</li>
+                                    <li>Vehicle Type: {{ vehicle.vehicle_type }}</li>
+                                    <li>Fuel Type: {{ vehicle.fuel_type }}</li>
+                                    <li>Car Subtype: {{ vehicle.car_subtype }}</li>
+                                    <li>Model: {{ vehicle.model }}</li>
+                                    <li>Year: {{ vehicle.year }}</li>
+                                    <li>Condition: {{ vehicle.condition }}</li>
+                                    <li>Reason for Scrapping: {{ vehicle.scrap_reason }}</li>
+                                    <li>Vehicle Weight (kg): {{ vehicle.vehicle_weight }}</li>
+                                    <li>Battery Condition: {{ vehicle.battery_condition }}</li>
+                                    <li>Tyres Condition: {{ vehicle.tyres_condition }}</li>
+                                </ul>
+                            </td>
+                            <td>
+                                {% if vehicle.rc_image %}
+                                    <details style="position: relative; z-index: 1000;">
+                                        <summary style="cursor: pointer; color: var(--color-secondary-yellow); font-weight: 700;">View RC Image ▼</summary>
+                                        <div style="background-color: #1a237e; padding: 10px; border-radius: 8px; box-shadow: 0 4px 12px rgba(255, 202, 40, 0.8); margin-top: 5px; max-width: 100%; max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+                                            <img class="clickable-image" src="{{ url_for('static', filename=vehicle.rc_image.split('static/')[-1].replace('\\', '/') ) }}" data-full-src="{{ url_for('static', filename=vehicle.rc_image.split('static/')[-1].replace('\\', '/') ) }}" alt="RC Image" style="max-width: 300px; max-height: 240px; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); cursor: pointer;" />
+                                        </div>
+                                    </details>
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if vehicle.vehicle_images %}
+                                    <details style="position: relative; z-index: 1000;">
+                                        <summary style="cursor: pointer; color: var(--color-secondary-yellow); font-weight: 700;">View Vehicle Images ▼</summary>
+                                        <div style="background-color: #1a237e; padding: 10px; border-radius: 8px; box-shadow: 0 4px 12px rgba(255, 202, 40, 0.8); margin-top: 5px; max-width: 320px; max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+                                            {% for img_path in vehicle.vehicle_images %}
+                                                <img class="clickable-image" src="{{ url_for('static', filename=img_path.split('static/')[-1].replace('\\', '/') ) }}" data-full-src="{{ url_for('static', filename=img_path.split('static/')[-1].replace('\\', '/') ) }}" alt="Vehicle Image" style="max-width: 100%; max-height: 80px; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); cursor: pointer;" />
+                                            {% endfor %}
+                                        </div>
+                                    </details>
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% set base_prices = {'Car': 5000, 'Motorcycle': 2000, 'Truck': 8000, 'Bus': 10000, 'Other': 3000} %}
+                                {% set condition_multipliers = {'Excellent': 1.0, 'Good': 0.8, 'Fair': 0.5, 'Poor': 0.3} %}
+                                {% set base_price = base_prices.get(vehicle.vehicle_type, 3000) %}
+                                {% set multiplier = condition_multipliers.get(vehicle.condition, 0.5) %}
+                                {% set weight = vehicle.vehicle_weight if vehicle.vehicle_weight else 1000 %}
+                                {% set battery_factor = {'Good': 1.0, 'Average': 0.7, 'Poor': 0.4}.get(vehicle.battery_condition, 0.7) %}
+                                {% set tyres_factor = {'Good': 1.0, 'Average': 0.7, 'Poor': 0.4}.get(vehicle.tyres_condition, 0.7) %}
+                                {% set scrap_rate = 35 %}
+                                {% set scrap_value = weight * scrap_rate %}
+                                {% set adjusted_value = scrap_value * battery_factor * tyres_factor %}
+                                {% set price = adjusted_value * multiplier * (base_price / 5000) %}
+                                {% set lower_bound = price * 0.9 %}
+                                {% set upper_bound = price * 1.1 %}
+                                <div style="display: flex; flex-direction: column; gap: 5px;">
+                                    <div>{{ "₹%.2f - ₹%.2f"|format(lower_bound, upper_bound) }}</div>
+                                    <!-- Removed flash message from inside vehicle loop -->
+                                    <!-- Flash messages will be displayed at the top of the page -->
+                                    {% if not vehicle.exact_quotation_sent %}
+                                        <form method="POST" action="{{ url_for('send_quoted_price') }}" style="display: flex; flex-direction: column; gap: 5px; max-width: 200px;">
+                                            <input type="hidden" name="username" value="{{ vehicle.owner_username }}" />
+                                            <input type="number" name="amount" placeholder="Enter exact quoted price" step="0.01" min="0" max="{{ upper_bound }}" required style="padding: 5px; border-radius: 4px; border: 1px solid #ccc;" />
+                                            <button type="submit" style="background-color: #ff6f61; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer;">Send Email</button>
+                                        </form>
+                                    {% else %}
+                                        <div style="color: #4caf50; font-weight: 700; margin-top: 5px;">
+                                            Email sent. You cannot send another email for this vehicle.
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="sent-mails" class="section">
+                <h2>All Sent Emails</h2>
+                {% if sent_emails %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Recipient Email</th>
+                            <th>Subject</th>
+                            <th>Body</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for email in sent_emails %}
+                        <tr>
+                            <td>{{ email.to_email }}</td>
+                            <td>{{ email.subject }}</td>
+                            <td><pre style="white-space: pre-wrap;">{{ email.body }}</pre></td>
+                            <td>{{ email.timestamp }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No sent emails to display.</p>
+                {% endif %}
+            </section>
+
+            <section id="inquiry" class="section">
+                <h2>Inquiry Submissions</h2>
+                {% if inquiries %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for inquiry in inquiries %}
+                        <tr>
+                            <td>{{ inquiry.name }}</td>
+                            <td>{{ inquiry.email }}</td>
+                            <td>{{ inquiry.phone }}</td>
+                            <td>{{ inquiry.message }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No inquiries submitted yet.</p>
+                {% endif %}
+            </section>
+
+            <section id="reinspection" class="section">
+                <h2>Reinspection Requests</h2>
+                {% if reinspection_requests %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Vehicle Number</th>
+                            <th>Owner</th>
+                            <th>Edited Data</th>
+                            <th>Edited RC Image</th>
+                            <th>Edited Vehicle Images</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for req in reinspection_requests %}
+                        <tr>
+                            <td>{{ req.vehicle_number }}</td>
+                            <td>{{ users[req.owner_username].name if req.owner_username in users else 'Unknown' }}</td>
+                            <td>
+                                <ul class="data-list">
+                                    {% for key, value in req.edited_data.items() %}
+                                    <li>{{ key.replace('_', ' ').title() }}: 
+                                        {% if value is iterable and value is not string %}
+                                            <ul>
+                                            {% for item in value %}
+                                                <li>{{ item }}</li>
+                                            {% endfor %}
+                                            </ul>
+                                        {% else %}
+                                            {{ value }}
+                                        {% endif %}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                {% if req.rc_image and req.rc_image|length > 0 %}
+                                    <details style="position: relative; z-index: 1000;">
+                                        <summary style="cursor: pointer; color: var(--color-secondary-yellow); font-weight: 700;">View Edited RC Image ▼</summary>
+                                        <div style="background-color: #1a237e; padding: 10px; border-radius: 8px; box-shadow: 0 4px 12px rgba(255, 202, 40, 0.8); margin-top: 5px; max-width: 100%; max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+                                            <img src="{{ url_for('static', filename=req.rc_image.split('static/')[-1].replace('\\', '/') ) }}" alt="Edited RC Image" style="max-width: 300px; max-height: 240px; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);" />
+                                        </div>
+                                    </details>
+                                {% else %}
+                                    <div style="color: #f44336; font-weight: 700;">No Edited RC Image Available</div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if (req.vehicle_images and req.vehicle_images|length > 0) or (req.removed_images and req.removed_images|length > 0) %}
+                                    <details style="position: relative; z-index: 1000;">
+                                        <summary style="cursor: pointer; color: var(--color-secondary-yellow); font-weight: 700;">View Edited Vehicle Images ▼</summary>
+                                        <div style="background-color: #1a237e; padding: 10px; border-radius: 8px; box-shadow: 0 4px 12px rgba(255, 202, 40, 0.8); margin-top: 5px; max-width: 320px; max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+                                            {% for img_path in req.vehicle_images %}
+                                                <img src="{{ url_for('static', filename=img_path.split('static/')[-1].replace('\\', '/') ) }}" alt="Edited Vehicle Image" style="max-width: 100%; max-height: 80px; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);" />
+                                            {% endfor %}
+                                            {% if req.removed_images and req.removed_images|length > 0 %}
+                                                {% for img_path in req.removed_images %}
+                                    <div class="image-container edited-box" style="margin-top: 10px;">
+                                        <img src="{{ url_for('static', filename=img_path.split('static/')[-1].replace('\\', '/') ) }}" alt="Removed Vehicle Image" style="opacity: 0.5; max-width: 100%; max-height: 80px; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);" />
+                                        <div class="overlay-icon cross">×</div>
+                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                    </details>
+                                {% else %}
+                                    <div style="color: #f44336; font-weight: 700;">No Edited Vehicle Images Available</div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <select class="reinspection-status-dropdown" data-username="{{ req.owner_username }}" data-vehicle-number="{{ req.vehicle_number }}" data-current-status="{{ req.status }}">
+                                    <option value="Pending" {% if req.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                    <option value="Approved" {% if req.status == 'Approved' %}selected{% endif %}>Approved</option>
+                                    <option value="Rejected" {% if req.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                                </select>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No reinspection requests submitted yet.</p>
+                {% endif %}
+            </section>
+
+            <!-- Modal for email editing and sending -->
+            <div id="reinspectionEmailModal" style="display:none; position: fixed; z-index: 1100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8);">
+                <div style="background-color: #fff; margin: 10% auto; padding: 20px; border-radius: 12px; max-width: 600px; box-shadow: 0 8px 20px rgba(0,0,0,0.5); color: #000;">
+                    <h2>Edit Email</h2>
+                    <form id="reinspectionEmailForm">
+                        <input type="hidden" id="emailUsername" name="username" />
+                        <input type="hidden" id="emailVehicleNumber" name="vehicle_number" />
+                        <input type="hidden" id="emailStatus" name="status" />
+                        <div style="margin-bottom: 10px;">
+                            <label for="emailContent">Email Content:</label><br />
+                            <textarea id="emailContent" name="email_content" rows="10" style="width: 100%; border-radius: 8px; border: 1px solid #ccc; padding: 10px;"></textarea>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                            <button type="button" id="cancelEmailButton" style="background-color: #ccc; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">Cancel</button>
+                            <button type="submit" id="sendEmailButton" style="background-color: #4caf50; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">Send Email</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <section id="reinspection" class="section">
+                <h2>Reinspection Requests</h2>
+                {% if reinspection_requests %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Vehicle Number</th>
+                            <th>Owner</th>
+                            <th>Edited Data</th>
+                            <th>RC Image</th>
+                            <th>Vehicle Images</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                     {% for req in reinspection_requests %}
+    {% if req.owner_username in users %}
+    <tr>
+        <td>{{ req.vehicle_number }}</td>
+        <td>{{ users[req.owner_username].name }}</td>
+        <td>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                {% for key, value in req.edited_data.items() %}
+                <li><strong>{{ key.replace('_', ' ').title() }}:</strong> {{ value }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+        <td>
+            {% if req.rc_image %}
+                <details style="position: relative; z-index: 1000;">
+                    <summary style="cursor: pointer; color: var(--color-secondary-yellow); font-weight: 700;">View RC Image ▼</summary>
+                    <div style="background-color: #1a237e; padding: 10px; border-radius: 8px; box-shadow: 0 4px 12px rgba(255, 202, 40, 0.8); margin-top: 5px; max-width: 100%; max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+                        <img src="{{ url_for('static', filename=req.rc_image.split('static/')[-1].replace('\\', '/') ) }}" alt="RC Image" style="max-width: 300px; max-height: 240px; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);" />
+                    </div>
+                </details>
+            {% else %}
+                N/A
+            {% endif %}
+        </td>
+        <td>
+            {% if req.vehicle_images %}
+                <details style="position: relative; z-index: 1000;">
+                    <summary style="cursor: pointer; color: var(--color-secondary-yellow); font-weight: 700;">View Vehicle Images ▼</summary>
+                    <div style="background-color: #1a237e; padding: 10px; border-radius: 8px; box-shadow: 0 4px 12px rgba(255, 202, 40, 0.8); margin-top: 5px; max-width: 320px; max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+                        {% for img_path in req.vehicle_images %}
+                            <img src="{{ url_for('static', filename=img_path.split('static/')[-1].replace('\\', '/') ) }}" alt="Vehicle Image" style="max-width: 100%; max-height: 80px; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);" />
+                        {% endfor %}
+                        {% if req.removed_images and req.removed_images|length > 0 %}
+                            {% for img_path in req.removed_images %}
+                                <div class="image-container edited-box" style="margin-top: 10px;">
+                                    <img src="{{ url_for('static', filename=img_path.split('static/')[-1].replace('\\', '/') ) }}" alt="Removed Vehicle Image" style="opacity: 0.5; max-width: 100%; max-height: 80px; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);" />
+                                    <div class="overlay-icon cross">×</div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </details>
+            {% else %}
+                N/A
+            {% endif %}
+        </td>
+        <td>{{ req.status }}</td>
+    </tr>
+    {% endif %}
+{% endfor %}
+   
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No reinspection requests submitted yet.</p>
+                {% endif %}
+            </section>
+
+            <section id="referrals" class="section">
+                <h2>User Referral Rewards</h2>
+                {% if referral_data %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Name</th>
+                            <th>Referral Code</th>
+                            <th>Number of Referrals</th>
+                            <th>Referral Rewards</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in referral_data %}
+                        <tr>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.referral_code }}</td>
+                            <td>{{ user.referrals_count }}</td>
+                            <td>{{ user.referral_rewards }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No referral data available.</p>
+                {% endif %}
+            </section>
+
+            <!-- User selection and data display -->
+            <div id="userSelectContainer" style="display:none;">
+                <label for="userSelect">Select User:</label>
+                <select id="userSelect">
+                    <option value="" selected disabled>Select a user</option>
+                    {% for username, user in users.items() %}
+                        <option value="{{ username }}">{{ user.name }} ({{ username }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div id="userDataContainer" style="display:none;">
+                <h2>User Data</h2>
+                <div id="userInfo"></div>
+                <h3>User Vehicle Type Distribution</h3>
+                <canvas id="userVehicleTypeChart" style="max-width: 600px; max-height: 400px; margin: 0 auto 30px auto;"></canvas>
+                <h3>Registered Vehicles</h3>
+                <table id="userVehiclesTable">
+                    <thead>
+                        <tr>
+                            <th>Vehicle Number</th>
+                            <th>Vehicle Type</th>
+                            <th>Fuel Type</th>
+                            <th>Car Subtype</th>
+                            <th>Model</th>
+                            <th>Year</th>
+                            <th>Condition</th>
+                            <th>Reason for Scrapping</th>
+                            <th>Vehicle Weight (kg)</th>
+                            <th>Battery Condition</th>
+                            <th>Tyres Condition</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userVehiclesBody">
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/admin_dashboard.js') }}"></script>
+
+    <!-- Modal for enlarged image -->
+    <div id="imageModal" style="display:none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8);">
+        <span id="modalClose" style="position: absolute; top: 20px; right: 35px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
+        <img id="modalImage" style="margin: auto; display: block; max-width: 90%; max-height: 80vh; border-radius: 12px; box-shadow: 0 8px 20px rgba(255,255,255,0.3);" />
+    </div>
+
+    <footer style="text-align: center; padding: 15px 20px; background-color: var(--color-primary-blue-dark); color: var(--color-background-light); box-shadow: 0 -2px 5px rgba(0,0,0,0.4); font-size: 0.9em; position: relative; z-index: 10;">
+        &copy; 2024 Telangana Innodatatics. All rights reserved.
+    </footer>
+</body>
+</html>

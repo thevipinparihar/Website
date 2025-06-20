@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login - Vehicle Scrapping Facility</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/colors.css') }}">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: url('https://t3.ftcdn.net/jpg/10/03/15/04/360_F_1003150417_ajJPKn0BpVwTSUO0j58vENuPbbusqapW.jpg') no-repeat center center fixed, linear-gradient(135deg, var(--color-primary-blue-dark) 0%, var(--color-primary-blue) 100%);
+            background-size: cover;
+            color: var(--color-background-light);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+        }
+        header {
+            background-color: var(--color-primary-blue-dark);
+            color: var(--color-background-light);
+            padding: 15px 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            max-width: 400px;
+            margin: 40px auto;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            position: relative;
+            z-index: 1;
+        }
+        .login-container {
+            width: 100%;
+            text-align: center;
+        }
+        .login-container img {
+            width: 100px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 5px rgba(255,255,255,0.7));
+        }
+        h2 {
+            color: var(--color-secondary-yellow);
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+        }
+        input[type="text"], input[type="password"] {
+            width: 90%;
+            padding: 12px 15px;
+            margin: 10px 0 20px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            box-shadow: inset 0 0 8px rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.15);
+            color: var(--color-background-light);
+            transition: background 0.3s ease;
+        }
+        input[type="text"]::placeholder, input[type="password"]::placeholder {
+            color: var(--color-text-light);
+        }
+        input[type="text"]:focus, input[type="password"]:focus {
+            background: rgba(255,255,255,0.3);
+            outline: none;
+        }
+        button {
+            background: linear-gradient(45deg, var(--color-accent-orange), var(--color-accent-red));
+            color: var(--color-background-light);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 95%;
+            box-shadow: 0 4px 12px var(--color-accent-orange-light);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+            font-weight: 700;
+        }
+        button:hover {
+            background: linear-gradient(45deg, var(--color-accent-red), var(--color-accent-red-dark));
+            box-shadow: var(--shadow-accent-red);
+        }
+        .error {
+            color: var(--color-accent-red);
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .back-link {
+            margin-top: 15px;
+            display: block;
+            color: var(--color-secondary-yellow);
+            text-decoration: none;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        footer {
+            background-color: var(--color-primary-blue-dark);
+            color: var(--color-background-light);
+            text-align: center;
+            padding: 15px 20px;
+            font-size: 0.9em;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.4);
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Telangana Innodatatics Vehicle Scrapping Portal</h1>
+    </header>
+    <main>
+        <div class="login-container">
+            <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="Login Icon" />
+            <h2>Login to Vehicle Scrapping</h2>
+            <p class="instructions">Please enter your username and password to access your account.</p>
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+            <form method="POST" action="{{ url_for('login_register') }}">
+                <input type="hidden" name="action" value="login" />
+                <input type="text" name="username" placeholder="Username" required />
+                <input type="password" name="password" placeholder="Password" required />
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <a href="{{ url_for('login_register') }}" style="color:#ffca28;">Register here</a></p>
+            <a class="back-link" href="{{ url_for('home') }}">Back to Home</a>
+        </div>
+    </main>
+    <footer>
+        &copy; 2024 Telangana Innodatatics. All rights reserved.
+    </footer>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registered Vehicles - Vehicle Scrapping Facility</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/colors.css') }}">
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, var(--color-primary-blue-light) 0%, var(--color-primary-blue) 100%);
+                color: var(--color-text-dark);
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+            header {
+                background-color: var(--color-primary-blue);
+                color: var(--color-background-light);
+                padding: 15px 30px;
+                box-shadow: var(--shadow-primary);
+            }
+            header h1 {
+                margin: 0;
+                font-size: 1.8em;
+                letter-spacing: 2px;
+            }
+            nav ul {
+                list-style: none;
+                padding: 0;
+                margin: 15px 0 0 0;
+                display: flex;
+                gap: 20px;
+            }
+            nav ul li a {
+                text-decoration: none;
+                color: var(--color-background-light);
+                font-weight: 600;
+                font-size: 16px;
+                padding: 8px 15px;
+                background-color: var(--color-accent-orange);
+                border-radius: 6px;
+                box-shadow: var(--shadow-accent-orange);
+                transition: background-color 0.3s ease;
+            }
+            nav ul li a:hover {
+                background-color: var(--color-accent-red);
+            }
+            main {
+                flex: 1;
+                padding: 40px 20px;
+                max-width: 900px;
+                margin: 0 auto;
+                background: rgba(255, 255, 255, 0.85);
+                border-radius: 12px;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            }
+            h2 {
+                color: var(--color-primary-blue);
+                font-size: 2em;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            p.description {
+                font-size: 1.1em;
+                line-height: 1.6;
+                color: var(--color-text-dark);
+                max-width: 700px;
+                margin: 0 auto 30px auto;
+                text-align: center;
+            }
+            .vehicle-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 20px;
+                margin-bottom: 30px;
+            }
+            .vehicle-card {
+                background: var(--color-background-light);
+                border-radius: 12px;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .vehicle-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            }
+            .vehicle-card h3 {
+                margin: 0 0 10px 0;
+                color: var(--color-primary-blue);
+                font-size: 1.4em;
+            }
+            .vehicle-info {
+                font-size: 1em;
+                color: var(--color-text-medium);
+                margin-bottom: 8px;
+            }
+            a.back-link {
+                display: inline-block;
+                margin-bottom: 20px;
+                color: var(--color-background-light);
+                font-weight: 700;
+                text-decoration: none;
+                transition: color 0.3s ease, box-shadow 0.3s ease;
+                padding: 10px 20px;
+                border-radius: 8px;
+                background-color: var(--color-accent-orange);
+                box-shadow: 0 4px 12px 2px var(--color-accent-orange-light);
+                font-size: 1.1em;
+            }
+            a.back-link:hover {
+                color: var(--color-background-light);
+                background-color: var(--color-accent-red);
+                text-decoration: none;
+                box-shadow: 0 6px 16px 3px var(--color-accent-red-dark);
+            }
+            footer {
+                background-color: var(--color-primary-blue);
+                color: var(--color-background-light);
+                text-align: center;
+                padding: 15px 20px;
+                font-size: 0.9em;
+                box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+                margin-top: auto;
+            }
+            /* Styling for share button and options */
+            #shareButton {
+                padding: 8px 20px;
+                font-weight: 700;
+                cursor: pointer;
+                background-color: var(--color-primary-blue);
+                color: white;
+                border: none;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 74, 173, 0.8);
+                transition: background-color 0.3s ease;
+                margin-left: 10px;
+            }
+            #shareButton:hover {
+                background-color: #003d99;
+            }
+            #shareOptions {
+                display: none;
+                margin-top: 10px;
+                text-align: center;
+            }
+            #shareOptions button, #shareOptions a {
+                margin-right: 10px;
+                padding: 6px 12px;
+                font-weight: 700;
+                cursor: pointer;
+                border-radius: 6px;
+                transition: background-color 0.3s ease, color 0.3s ease;
+                text-decoration: none;
+                color: white;
+                background-color: var(--color-primary-blue);
+                box-shadow: 0 3px 8px rgba(0, 74, 173, 0.7);
+            }
+            #shareOptions button:hover, #shareOptions a:hover {
+                background-color: #003d99;
+                color: #ffca28;
+                text-decoration: underline;
+            }
+        </style>
+</head>
+<body>
+    <header>
+        <h1>Telangana Innodatatics Vehicle Scrapping Portal</h1>
+        <nav>
+            <ul>
+                
+                <li><a href="{{ url_for('quotation') }}">Get Quotation</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Registered Vehicles for Scrapping</h2>
+        <p class="description">
+            Below is the list of vehicles registered for scrapping at our facility. You can view details such as owner, vehicle number, type, and reason for scrapping.
+        </p>
+        <p style="font-weight: 700; color: var(--color-primary-blue); text-align: center;">
+            Your Referral Code: <strong id="referralCode">{{ user.referral_code }}</strong>
+            <button id="shareButton">Share</button>
+            <br/>
+            You have <strong>{{ user.referral_rewards }}</strong> referral reward points.
+        </p>
+        <div id="shareOptions" style="display: none; text-align: center; margin-bottom: 20px;">
+            <button id="copyReferralCode">Copy</button>
+            <a href="https://wa.me/?text=Join%20Telangana%20Innodatatics%20Vehicle%20Scrapping%20Portal%20using%20my%20referral%20code%20{{ user.referral_code }}" target="_blank">WhatsApp</a>
+            <a href="https://t.me/share/url?url=https://your-website-url.com&text=Join%20Telangana%20Innodatatics%20Vehicle%20Scrapping%20Portal%20using%20my%20referral%20code%20{{ user.referral_code }}" target="_blank">Telegram</a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://your-website-url.com" target="_blank">Facebook</a>
+        </div>
+        {% if vehicles %}
+            <div class="vehicle-grid">
+                {% for vehicle in vehicles %}
+                <div class="vehicle-card">
+                    <h3><a href="{{ url_for('vehicle_detail', vehicle_number=vehicle.vehicle_number) }}" style="color: var(--color-primary-blue); text-decoration: none;">Owner: {{ user.name }}</a></h3>
+                    <div class="vehicle-info"><strong>Vehicle Number:</strong> {{ vehicle.vehicle_number }}</div>
+                    <div class="vehicle-info"><strong>Vehicle Type:</strong> {{ vehicle.vehicle_type }}</div>
+                    <div class="vehicle-info"><strong>Fuel Type:</strong> {{ vehicle.fuel_type }}</div>
+                    {% if vehicle.vehicle_type == 'Car' %}
+                    <div class="vehicle-info"><strong>Car Subtype:</strong> {{ vehicle.car_subtype }}</div>
+                    {% endif %}
+                    <div class="vehicle-info"><strong>Model:</strong> {{ vehicle.model }}</div>
+                    <div class="vehicle-info"><strong>Year:</strong> {{ vehicle.year }}</div>
+                    <div class="vehicle-info"><strong>Condition:</strong> {{ vehicle.condition }}</div>
+                    <div class="vehicle-info"><strong>Vehicle Weight (kg):</strong> {{ vehicle.vehicle_weight }}</div>
+                    <div class="vehicle-info"><strong>Battery Condition:</strong> {{ vehicle.battery_condition }}</div>
+                    <div class="vehicle-info"><strong>Tyres Condition:</strong> {{ vehicle.tyres_condition }}</div>
+                    <div class="vehicle-info"><strong>Reason for Scrapping:</strong> {{ vehicle.scrap_reason }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No vehicles registered yet.</p>
+        {% endif %}
+        <a class="back-link" href="{{ url_for('home') }}">Back to Home</a>
+    </main>
+    <footer>
+        &copy; 2024 Telangana Innodatatics. All rights reserved.
+    </footer>
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const shareButton = document.getElementById('shareButton');
+            const shareOptions = document.getElementById('shareOptions');
+
+            shareButton.addEventListener('click', function(event) {
+                event.stopPropagation();
+                if (shareOptions.style.display === 'none' || shareOptions.style.display === '') {
+                    shareOptions.style.display = 'block';
+                } else {
+                    shareOptions.style.display = 'none';
+                }
+            });
+
+            document.getElementById('copyReferralCode').addEventListener('click', function() {
+                const referralCode = document.getElementById('referralCode').textContent;
+                navigator.clipboard.writeText(referralCode).then(() => {
+                    alert('Referral code copied to clipboard!');
+                }).catch(err => {
+                    alert('Failed to copy referral code: ' + err);
+                });
+            });
+
+            // Close share options if clicked outside
+            document.addEventListener('click', function(event) {
+                if (!shareButton.contains(event.target) && !shareOptions.contains(event.target)) {
+                    shareOptions.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

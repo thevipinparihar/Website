@@ -1,0 +1,78 @@
+<label for="model">Model:</label>
+            <input type="text" id="model" name="model" required />
+
+            <label for="year">Year:</label>
+            <input type="number" id="year" name="year" min="1900" max="2100" required />
+
+            <label for="condition">Condition:</label>
+            <select id="condition" name="condition" required>
+                <option value="">Select condition</option>
+                <option value="Excellent">Excellent</option>
+                <option value="Good">Good</option>
+                <option value="Fair">Fair</option>
+                <option value="Poor">Poor</option>
+            </select>
+
+            <label for="scrap_reason">Reason for Scrapping:</label>
+            <textarea id="scrap_reason" name="scrap_reason" rows="4" required></textarea>
+
+            <label for="vehicle_weight">Vehicle Weight (kg):</label>
+            <input type="number" id="vehicle_weight" name="vehicle_weight" min="0" step="0.1" required />
+
+            <label for="battery_condition">Battery Condition:</label>
+            <select id="battery_condition" name="battery_condition" required>
+                <option value="">Select condition</option>
+                <option value="Good">Good</option>
+                <option value="Average">Average</option>
+                <option value="Poor">Poor</option>
+            </select>
+
+            <label for="tyres_condition">Tyres Condition:</label>
+            <select id="tyres_condition" name="tyres_condition" required>
+                <option value="">Select condition</option>
+                <option value="Good">Good</option>
+                <option value="Average">Average</option>
+                <option value="Poor">Poor</option>
+            </select>
+
+            <label for="rc_image">Upload RC Image:</label>
+            <input type="file" id="rc_image" name="rc_image" accept="image/*" required />
+
+            <label for="vehicle_images">Upload Vehicle Images (minimum 2):</label>
+            <input type="file" id="vehicle_images" name="vehicle_images" accept="image/*" multiple required />
+            <small style="display: block; margin-top: 5px; color: #ff6f61; font-weight: 600;">Upload images of vehicle in as many angle as possible. You can select multiple images at once. </small>
+            <script>
+                const vehicleImagesInput = document.getElementById('vehicle_images');
+                vehicleImagesInput.addEventListener('change', function() {
+                    if (this.files.length < 2) {
+                        alert('Please select at least 2 images.');
+                        this.value = '';
+                    }
+                });
+
+                function toggleCarSubtype() {
+                    const vehicleType = document.getElementById('vehicle_type').value;
+                    const carSubtypeLabel = document.getElementById('car_subtype_label');
+                    const carSubtypeSelect = document.getElementById('car_subtype');
+                    if (vehicleType === 'Car') {
+                        carSubtypeLabel.style.display = 'block';
+                        carSubtypeSelect.style.display = 'block';
+                        carSubtypeSelect.required = true;
+                    } else {
+                        carSubtypeLabel.style.display = 'none';
+                        carSubtypeSelect.style.display = 'none';
+                        carSubtypeSelect.required = false;
+                        carSubtypeSelect.value = '';
+                    }
+                }
+            </script>
+
+            <button type="submit">Register Vehicle</button>
+        </form>
+        <p class="back-link"><a href="{{ url_for('home') }}">Back to Home</a></p>
+    </main>
+    <footer>
+        &copy; 2024 Telangana Innodatatics. All rights reserved.
+    </footer>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contact Us - Vehicle Scrapping Facility</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/colors.css') }}">
+    <!-- Added Font Awesome CSS for social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--color-primary-blue-dark) 0%, var(--color-primary-blue) 100%);
+            color: var(--color-background-light);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: var(--color-secondary-yellow);
+            font-weight: 700;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+        }
+        h2 {
+            color: var(--color-secondary-yellow-light);
+            font-weight: 700;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+        }
+        ul {
+            color: var(--color-background-light);
+            font-weight: 700;
+            font-size: 1.1em;
+            list-style: none;
+            padding: 0;
+            text-align: center;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            align-items: center;
+        }
+        ul li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: var(--color-secondary-yellow);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        a:hover {
+            color: #2563EB; /* Hover color */
+            text-decoration: none;
+            transform: scale(1.1);
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: 700;
+            font-size: 1.1em;
+            color: var(--color-secondary-yellow);
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1em;
+            background: rgba(255,255,255,0.15);
+            color: var(--color-background-light);
+            box-shadow: inset 0 0 8px rgba(255,255,255,0.3);
+            font-family: 'Roboto', sans-serif;
+            box-sizing: border-box;
+            transition: background 0.3s ease;
+        }
+        textarea {
+            resize: vertical;
+            height: 120px;
+        }
+        input::placeholder, textarea::placeholder {
+            color: var(--color-text-light);
+        }
+        input:focus, textarea:focus {
+            background: rgba(255,255,255,0.3);
+            outline: none;
+        }
+        button {
+            margin-top: 15px;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, var(--color-accent-orange), var(--color-accent-red));
+            border: none;
+            border-radius: 8px;
+            color: var(--color-background-light);
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-family: 'Roboto', sans-serif;
+            box-shadow: 0 4px 12px var(--color-accent-orange-light);
+            transition: background 0.3s ease;
+            width: 100%;
+        }
+        button:hover {
+            background: linear-gradient(45deg, var(--color-accent-red), var(--color-accent-red-dark));
+            box-shadow: 0 6px 16px rgba(184,28,28,0.8);
+        }
+        .success-message {
+            color: #cddc39;
+            font-weight: 700;
+            margin-top: 15px;
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+        }
+    </style>
+</head>
+<body>
+    <h1>Get in Touch with Us</h1>
+    <div style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
+        <a href="{{ url_for('home') }}" style="display: inline-block; padding: 10px 20px; background: #ffca28; color: #000; font-weight: 700; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 12px rgba(255,202,40,0.7); transition: background 0.3s ease;">
+            Home
+        </a>
+    </div>
+    <h2>T Hub Phase 2, 20, Inorbit Mall Rd, Vittal Rao Nagar,  Madhapur, Hyderabad, Telangana 500081</h2>
+    <p style="text-align:center;">Phone: +91 76739 55077 | Email: info@innodatatics.com</p>
+    <ul class="social-icons" style="padding: 0; list-style: none; text-align: center; margin-bottom: 30px; display: flex; justify-content: center; gap: 15px; align-items: center;">
+        <li>
+            <a href="https://www.facebook.com/innodatatics" target="_blank" title="Facebook">
+                <i class="fab fa-facebook-f" style="font-size: 28px; color: #ffca28;"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://www.instagram.com/innodatatics" target="_blank" title="Instagram">
+                <i class="fab fa-instagram" style="font-size: 28px; color: #ffca28;"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://x.com/innodatatics" target="_blank" title="X (Twitter)">
+                <i class="fab fa-twitter" style="font-size: 28px; color: #ffca28;"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://www.linkedin.com/company/innodatatics/" target="_blank" title="LinkedIn">
+                <i class="fab fa-linkedin-in" style="font-size: 28px; color: #ffca28;"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://www.youtube.com/@innodataticsinc7547/videos" target="_blank" title="YouTube">
+                <i class="fab fa-youtube" style="font-size: 28px; color: #ffca28;"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://wa.me/yourwhatsappnumber" target="_blank" title="WhatsApp">
+                <i class="fab fa-whatsapp" style="font-size: 28px; color: #ffca28;"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://x.com/innodatatics" target="_blank" title="X (Twitter)">
+                <i class="fab fa-x-twitter" style="font-size: 28px; color: #ffca28;"></i>
+            </a>
+        </li>
+    </ul>
+
+    <form method="post" action="{{ url_for('contact_us') }}">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" required />
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea>
+
+        <button type="submit">Send Inquiry</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="success-message">{{ messages[0] }}</div>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>
