@@ -1,0 +1,198 @@
+:root {
+    /* Primary Colors */
+    --color-primary-blue: #005a9c; /* Accessible blue */
+    --color-primary-blue-light: #007acc;
+    --color-primary-blue-dark: #003d66;
+
+    /* Secondary Colors */
+    --color-secondary-yellow: #ffca28; /* Gold/yellow */
+    --color-secondary-yellow-light: #fff176;
+    --color-secondary-yellow-dark: #c8b900;
+
+    /* Accent Colors */
+    --color-accent-red: #d32f2f; /* Accessible red */
+    --color-accent-red-light: #ef5350;
+    --color-accent-red-dark: #9a0007;
+
+    --color-accent-orange: #ff7043; /* Accessible orange */
+    --color-accent-orange-light: #ff8a65;
+    --color-accent-orange-dark: #bf360c;
+
+    /* Neutral Colors */
+    --color-text-dark: #222222;
+    --color-text-medium: #555555;
+    --color-text-light: #e0e0e0;
+    --color-background-light: #ffffff;
+    --color-background-muted: #f5f5f5;
+
+    /* Shadows */
+    --shadow-primary: 0 8px 30px rgba(0, 90, 156, 0.4);
+    --shadow-accent-red: 0 6px 20px rgba(211, 47, 47, 0.8);
+    --shadow-accent-orange: 0 6px 20px rgba(255, 112, 67, 0.8);
+}
+
+/* Example usage */
+body {
+    background-color: var(--color-background-muted);
+    color: var(--color-text-dark);
+}
+
+header {
+    background-color: var(--color-primary-blue);
+    color: var(--color-background-light);
+    box-shadow: var(--shadow-primary);
+}
+
+a, button {
+    color: var(--color-background-light);
+}
+
+a.primary, button.primary {
+    background-color: var(--color-primary-blue);
+    box-shadow: var(--shadow-primary);
+}
+
+a.primary:hover, button.primary:hover {
+    background-color: var(--color-primary-blue-dark);
+}
+
+a.accent-red, button.accent-red {
+    background-color: var(--color-accent-red);
+    box-shadow: var(--shadow-accent-red);
+}
+
+a.accent-red:hover, button.accent-red:hover {
+    background-color: var(--color-accent-red-dark);
+}
+
+a.accent-orange, button.accent-orange {
+    background-color: var(--color-accent-orange);
+    box-shadow: var(--shadow-accent-orange);
+}
+
+a.accent-orange:hover, button.accent-orange:hover {
+    background-color: var(--color-accent-orange-dark);
+}
+
+.text-secondary {
+    color: var(--color-text-medium);
+}
+
+.text-light {
+    color: var(--color-text-light);
+}
+
+.background-light {
+    background-color: var(--color-background-light);
+}
+
+.background-muted {
+    background-color: var(--color-background-muted);
+}
+
+body {
+    color: var(--color-text-dark);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: -1;
+}
+
+/* Added CSS for dropdown toggle */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #1a237e;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(255, 202, 40, 0.8);
+    z-index: 100;
+    max-width: 320px;
+    overflow-x: auto;
+    white-space: nowrap;
+    border: 2px solid yellow; /* Added border for visibility debugging */
+}
+
+.dropdown-content.show-dropdown {
+    display: block;
+    z-index: 9999;
+    border: 2px solid lime; /* Added border for visibility debugging */
+}
+
+.blur-background > *:not(#enlargedImageContainer) {
+    filter: blur(5px);
+    pointer-events: none;
+    user-select: none;
+}
+
+.enlarged-image-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    height: 90vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.enlarged-image-container > div {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    text-align: center;
+}
+
+.enlarged-image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+    object-fit: contain;
+}
+
+.enlarged-image-container button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 6px 12px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 6px;
+    border: none;
+    background-color: var(--color-secondary-yellow);
+    color: var(--color-primary-blue-dark);
+}
+
+/* Added CSS for average price chart container */
+#avg-price-chart-container {
+    width: 85% !important;
+    height: 450px !important;
+    margin: 0 auto 50px auto;
+    box-shadow: 0 8px 30px rgba(255, 202, 40, 0.7);
+    border-radius: 20px;
+    background: rgba(26, 35, 126, 0.8);
+    padding: 20px;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-direction: column !important;
+}

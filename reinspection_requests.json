@@ -1,0 +1,164 @@
+[
+    {
+        "vehicle_number": "AP29BR5960",
+        "owner_username": "abcd123",
+        "original_data": {
+            "vehicle_number": "AP29BR5960",
+            "vehicle_type": null,
+            "fuel_type": "Petrol",
+            "car_subtype": "Hatchback",
+            "model": "ALTO 800",
+            "year": "2016",
+            "condition": "Good",
+            "scrap_reason": "old",
+            "vehicle_weight": 1400.0,
+            "battery_condition": "Poor",
+            "tyres_condition": "Poor",
+            "owner_username": "abcd123",
+            "rc_image": "vehicle_scrapping_app/static/uploads\\RTO.jpg",
+            "vehicle_images": [
+                "vehicle_scrapping_app/static/uploads\\image_2.jfif",
+                "vehicle_scrapping_app/static/uploads\\image_6.jfif",
+                "vehicle_scrapping_app/static/uploads\\image_7.jfif"
+            ],
+            "exact_quotation_sent": true
+        },
+        "edited_data": {
+            "vehicle_type": null,
+            "fuel_type": "Petrol",
+            "car_subtype": "Hatchback",
+            "model": "ALTO 800",
+            "year": "2016",
+            "condition": "Good",
+            "scrap_reason": "old",
+            "vehicle_weight": 1400.0,
+            "battery_condition": "Poor",
+            "tyres_condition": "Poor"
+        },
+        "original_rc_image": "vehicle_scrapping_app/static/uploads\\RTO.jpg",
+        "rc_image": null,
+        "original_vehicle_images": [
+            "vehicle_scrapping_app/static/uploads\\image_2.jfif",
+            "vehicle_scrapping_app/static/uploads\\image_6.jfif",
+            "vehicle_scrapping_app/static/uploads\\image_7.jfif"
+        ],
+        "vehicle_images": [],
+        "status": "Completed",
+        "rc_image_status": "removed",
+        "added_images": [],
+        "removed_images": [
+            "vehicle_scrapping_app/static/uploads\\image_6.jfif",
+            "vehicle_scrapping_app/static/uploads\\image_7.jfif",
+            "vehicle_scrapping_app/static/uploads\\image_2.jfif"
+        ],
+        "unchanged_images": []
+    },
+    {
+        "vehicle_number": "AP29BR5960",
+        "owner_username": "abcd123",
+        "original_data": {
+            "vehicle_number": "AP29BR5960",
+            "vehicle_type": null,
+            "fuel_type": "Petrol",
+            "car_subtype": "Hatchback",
+            "model": "ALTO 800",
+            "year": "2016",
+            "condition": "Good",
+            "scrap_reason": "old",
+            "vehicle_weight": 1400.0,
+            "battery_condition": "Poor",
+            "tyres_condition": "Poor",
+            "owner_username": "abcd123",
+            "rc_image": "vehicle_scrapping_app/static/uploads\\RTO.jpg",
+            "vehicle_images": [
+                "vehicle_scrapping_app/static/uploads\\image_1.jfif",
+                "vehicle_scrapping_app/static/uploads\\image_2.jfif",
+                "vehicle_scrapping_app/static/uploads\\image_6.jfif",
+                "vehicle_scrapping_app/static/uploads\\image_7.jfif"
+            ],
+            "exact_quotation_sent": true
+        },
+        "edited_data": {
+            "vehicle_type": null,
+            "fuel_type": "Petrol",
+            "car_subtype": "Hatchback",
+            "model": "ALTO 800",
+            "year": "2010",
+            "condition": "Good",
+            "scrap_reason": "old",
+            "vehicle_weight": 1400.0,
+            "battery_condition": "Poor",
+            "tyres_condition": "Poor"
+        },
+        "original_rc_image": "vehicle_scrapping_app/static/uploads\\RTO.jpg",
+        "rc_image": null,
+        "original_vehicle_images": [
+            "vehicle_scrapping_app/static/uploads\\image_1.jfif",
+            "vehicle_scrapping_app/static/uploads\\image_2.jfif",
+            "vehicle_scrapping_app/static/uploads\\image_6.jfif",
+            "vehicle_scrapping_app/static/uploads\\image_7.jfif"
+        ],
+        "vehicle_images": [],
+        "status": "Pending",
+        "rc_image_status": "removed",
+        "added_images": [],
+        "removed_images": [
+            "vehicle_scrapping_app/static/uploads\\image_2.jfif",
+            "vehicle_scrapping_app/static/uploads\\image_6.jfif",
+            "vehicle_scrapping_app/static/uploads\\image_1.jfif",
+            "vehicle_scrapping_app/static/uploads\\image_7.jfif"
+        ],
+        "unchanged_images": []
+    },
+    {
+        "vehicle_number": "xyz",
+        "owner_username": "jit",
+        "original_data": {
+            "vehicle_number": "xyz",
+            "vehicle_type": null,
+            "fuel_type": "Petrol",
+            "car_subtype": "",
+            "model": "xf",
+            "year": "2015",
+            "condition": "Good",
+            "scrap_reason": "old",
+            "vehicle_weight": 150.0,
+            "battery_condition": "Poor",
+            "tyres_condition": "Poor",
+            "owner_username": "jit",
+            "rc_image": "vehicle_scrapping_app/static/uploads\\RTO.jpg",
+            "vehicle_images": [
+                "vehicle_scrapping_app/static/uploads\\automobile-3368094.jpg",
+                "vehicle_scrapping_app/static/uploads\\cog-wheels-2125169_1280.jpg"
+            ],
+            "exact_quotation_sent": true
+        },
+        "edited_data": {
+            "vehicle_type": null,
+            "fuel_type": "Petrol",
+            "car_subtype": "",
+            "model": "xf",
+            "year": "2015",
+            "condition": "Good",
+            "scrap_reason": "old",
+            "vehicle_weight": 150.0,
+            "battery_condition": "Poor",
+            "tyres_condition": "Poor"
+        },
+        "original_rc_image": "vehicle_scrapping_app/static/uploads\\RTO.jpg",
+        "rc_image": null,
+        "original_vehicle_images": [
+            "vehicle_scrapping_app/static/uploads\\automobile-3368094.jpg",
+            "vehicle_scrapping_app/static/uploads\\cog-wheels-2125169_1280.jpg"
+        ],
+        "vehicle_images": [],
+        "status": "Completed",
+        "rc_image_status": "removed",
+        "added_images": [],
+        "removed_images": [
+            "vehicle_scrapping_app/static/uploads\\cog-wheels-2125169_1280.jpg",
+            "vehicle_scrapping_app/static/uploads\\automobile-3368094.jpg"
+        ],
+        "unchanged_images": []
+    }
+]
